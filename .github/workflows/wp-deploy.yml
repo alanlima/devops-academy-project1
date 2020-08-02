@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Debug commands
+        run: docker images
+
       - name: Deploy Wordpress to ECR
         run: cd ci && make deploy-wp
         env:
