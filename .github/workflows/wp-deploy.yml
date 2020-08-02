@@ -15,12 +15,12 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Debug commands
-        run: docker images
+        run: echo $GITHUB_REF && echo $GITHUB_SHA
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/cache@v2
         with:
-          name: deployment-sha
           path: ./ci
+          key: ${{ github.ref }}
       
       - name: Display structure of downloaed files
         run: ls ci -R && cat ./ci/deploy-sha.txt

@@ -6,7 +6,7 @@ name: wp-build-push
 # events but only for the master branch
 on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
     # paths:
     #   - 'src/docker/**/*'
 
@@ -19,27 +19,30 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    - name: Pulling help images
-      run: cd ci && docker-compose pull aws
+      - name: Debug commands
+        run: echo $GITHUB_REF && echo $GITHUB_SHA
 
-    # - name: Check AWS credentials
-    #   run: cd ci && make test-aws
-    #   env:
-    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: Pulling help images
+        run: cd ci && docker-compose pull aws
 
-    - name: Build and Push Docker Image
-      run: cd ci && make build-push-wp
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      # - name: Check AWS credentials
+      #   run: cd ci && make test-aws
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: deployment-sha
-        path: ./ci/deploy-sha.txt
+      - name: Build and Push Docker Image
+        run: cd ci && make build-push-wp
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - uses: actions/cache@v2
+        with:
+          path: ./ci
+          key: ${{ github.ref }}
