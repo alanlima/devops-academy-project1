@@ -20,10 +20,7 @@ jobs:
           && echo $GITHUB_SHA \
           && echo $HEAD_TREE_ID
         env:
-          HEAD_TREE_ID: ${{ github.head_commit.tree_id }}
-      
-      - name: Display structure of downloaed files
-        run: ls ci -R && cat ./ci/deploy-sha.txt
+          HEAD_TREE_ID: ${{ github.event.head_commit.tree_id }}
 
       - name: Deploy Wordpress to ECR
         run: cd ci && make deploy-wp

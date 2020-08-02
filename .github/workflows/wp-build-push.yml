@@ -31,7 +31,7 @@ jobs:
           && echo $GITHUB_SHA \
           && echo $HEAD_TREE_ID
         env:
-          HEAD_TREE_ID: ${{ github.head_commit.tree_id }}
+          HEAD_TREE_ID: ${{ github.event.head_commit.tree_id }}
 
       # - name: Debug commands
       #   run: echo $GITHUB_REF && echo $GITHUB_SHA

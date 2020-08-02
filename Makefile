@@ -10,4 +10,4 @@ ga-act-pr:
 
 ga-act-push:
 	act push --secret-file ./ci/env -P ubuntu-latest=flemay/musketeers
-.PHONY:ga-act-pr
+.PHONY:ga-act-push
