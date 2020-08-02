@@ -1,6 +1,7 @@
 -include .env
 
 AWS_ACCOUNT_ID ?= $(shell aws sts get-caller-identity --query "Account" --output text)
+COMMIT_SHA ?= $(shell git rev-parse --short HEAD)
 DOCKER_RUNNER?=docker-compose run --rm
 DOCKER_REPOSITORY?=devops-wordpress
 DOCKER_REGISTRY_URL ?= ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
@@ -32,6 +33,11 @@ push-wp:
 
 build-push-wp: ecr-login build-wp push-wp
 .PHONY:build-push-wp
+
+deploy-wp:
+	@echo "=== 🧯🧯🧯 SIMULATION ==="
+	@echo "SHOULD DEPLOY USING SHA: ${COMMIT_SHA}"
+.PHONY:deploy
 
 test-aws:
 	$(DOCKER_RUNNER) aws sts get-caller-identity --output json
