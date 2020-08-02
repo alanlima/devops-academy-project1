@@ -22,8 +22,16 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # - name: Pulling help images
-      #   run: cd ci && docker-compose pull aws
+      - name: Pulling help images
+        run: cd ci && docker-compose pull aws
+
+      - name: Debug commands
+        run: |
+          echo $GITHUB_REF \
+          && echo $GITHUB_SHA \
+          && echo $HEAD_TREE_ID
+        env:
+          HEAD_TREE_ID: ${{ github.head_commit.tree_id }}
 
       # - name: Debug commands
       #   run: echo $GITHUB_REF && echo $GITHUB_SHA

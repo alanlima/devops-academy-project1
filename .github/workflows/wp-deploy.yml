@@ -15,12 +15,12 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Debug commands
-        run: echo $GITHUB_REF && echo $GITHUB_SHA
-
-      - uses: actions/cache@v2
-        with:
-          path: ./ci
-          key: ${{ github.ref }}
+        run: |
+          echo $GITHUB_REF \
+          && echo $GITHUB_SHA \
+          && echo $HEAD_TREE_ID
+        env:
+          HEAD_TREE_ID: ${{ github.head_commit.tree_id }}
       
       - name: Display structure of downloaed files
         run: ls ci -R && cat ./ci/deploy-sha.txt
