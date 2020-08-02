@@ -1,12 +1,14 @@
 -include .env
 
+AWS_ACCOUNT_ID ?= $(shell aws sts get-caller-identity --query "Account" --output text)
 DOCKER_RUNNER?=docker-compose run --rm
 DOCKER_REPOSITORY?=devops-wordpress
+DOCKER_REGISTRY_URL ?= ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
 
 ecr-login:
 	@echo "\n === 🔐 Login to ECR docker registry: ${C_GREEN}${DOCKER_REGISTRY_URL}${C_RESET}\n"
 
-	@$(DOCKER_RUNNER) aws ecr get-login-password \
+	$(DOCKER_RUNNER) aws ecr get-login-password \
 		--region ${AWS_DEFAULT_REGION} \
 		| docker login \
 		--username AWS \
