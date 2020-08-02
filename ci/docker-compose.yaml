@@ -14,7 +14,7 @@ services:
     
   ci-terraform:
     image: hashicorp/terraform:0.12.29
-    working_dir: tf
+    working_dir: /tf
     volumes:
       - ${PWD}/tf:/tf
     environment:
