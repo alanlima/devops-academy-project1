@@ -32,7 +32,6 @@ jobs:
     #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     #     AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
-    # Runs a single command using the runners shell
     - name: Build and Push Docker Image
       run: cd ci && make build-push-wp
       env:
