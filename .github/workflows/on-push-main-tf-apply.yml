@@ -1,14 +1,14 @@
-name: on-pr-ci-terraform
+name: on-push-main-ci-tf-apply
 
 on:
-  pull_request:
+  push:
     branches:
       - master
     paths:
       - ci/tf/**/*
 
 jobs:
-  tf-plan:
+  tf-apply:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,14 +18,11 @@ jobs:
         id: tf_cred
         with:
           _input-file: './.github/terraform/credentials.tfrc.json'
-          TERRAFORM_TOKEN: ${{ secrets.TF_VAR_github_token }}
+          TERRAFORM_TOKEN: ${{ secrets.TERRAFORM_TOKEN }}
 
       - name: Update Terraform Credentials
         run: echo '${{ steps.tf_cred.outputs.result }}' > ./.github/terraform/credentials.tfrc.json
 
-      - name: Terraform Plan
+      - name: Terraform Apply
         working-directory: ci
-        run: make tf-ci-plan
-        env:
-          TF_VAR_github_token: ${{ secrets.TF_VAR_github_token }}
-          
+        run: make tf-ci-apply
