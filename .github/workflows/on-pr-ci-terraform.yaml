@@ -1,0 +1,29 @@
+name: on-pr-ci-terraform
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - ci/tf/**/*
+
+jobs:
+  tf-plan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: bluwy/substitute-string-action@v1
+        id: tf_cred
+        with:
+          _input-file: './.github/terraform/credentials.tfrc.json'
+          TERRAFORM_TOKEN: ${{ secrets.TERRAFORM_TOKEN }}
+
+      - name: Update Terraform Credentials
+        run: echo '${{ steps.tf_cred.outputs.result }}' > ./.github/terraform/credentials.tfrc.json
+
+      - name: Terraform Plan
+        working-directory: ci
+        run: make tf-ci-plan
+          
