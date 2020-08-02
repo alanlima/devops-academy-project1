@@ -1,4 +1,4 @@
-include .env
+-include .env
 
 COMMIT_SHA ?= $(shell git rev-parse --short HEAD)
 AWS_REGION ?= $(shell cat ~/.aws/config | grep -m 1 region | sed 's/region = //')
@@ -18,6 +18,7 @@ build:
 
 push:
 	@echo "\n === 🔖 Tagging image with sha ${C_GREEN}${COMMIT_SHA}${C_RESET}"
+	@echo "\n === 🔖 New Tag ${DOCKER_REGISTRY_URL}/${DOCKER_REPOSITORY}:${COMMIT_SHA}"
 	@docker tag devops-wordpress:latest ${DOCKER_REGISTRY_URL}/${DOCKER_REPOSITORY}:${COMMIT_SHA}
 	
 	@echo "\n === 🚀 Pushing into repository\n"
