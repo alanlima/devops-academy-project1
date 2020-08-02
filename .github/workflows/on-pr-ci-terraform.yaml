@@ -8,11 +8,17 @@ on:
       - ci/tf/**/*
 
 jobs:
-  plan:
+  tf-plan:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: bluwy/substitute-string-action@v1
+        id: tf_cred
+        with:
+          _input-file: './.github/terraform/credentials.tfrc.json'
+          TERRAFORM_TOKEN: ${{ secrets.TF_VAR_github_token }}
 
       - name: Terraform Plan
         working-directory: ci

@@ -17,6 +17,7 @@ services:
     working_dir: /tf
     volumes:
       - ${PWD}/tf:/tf
+      - ../.github/terraform:/root/.terraform.d
     environment:
       - TF_VAR_github_token
       - AWS_ACCESS_KEY_ID
