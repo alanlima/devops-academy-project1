@@ -17,6 +17,14 @@ jobs:
       - name: Debug commands
         run: docker images
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: deployment-sha
+          path: ./ci
+      
+      - name: Display structure of downloaed files
+        run: ls ci -R && cat ./ci/deploy-sha.txt
+
       - name: Deploy Wordpress to ECR
         run: cd ci && make deploy-wp
         env:
