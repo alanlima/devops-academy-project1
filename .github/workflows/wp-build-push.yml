@@ -22,6 +22,9 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
+    - name: Debug commands
+      run: echo $GITHUB_REF && echo $GITHUB_SHA
+
     - name: Pulling help images
       run: cd ci && docker-compose pull aws
 
@@ -39,7 +42,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/cache@v2
       with:
-        name: deployment-sha
-        path: ./ci/deploy-sha.txt
+        path: ./ci
+        key: ${{ GITHUB_REF }}
