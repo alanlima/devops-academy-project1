@@ -9,7 +9,7 @@ DOCKER_REGISTRY_URL ?= ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws
 ecr-login:
 	@echo "\n === 🔐 Login to ECR docker registry: ${C_GREEN}${DOCKER_REGISTRY_URL}${C_RESET}\n"
 
-	$(DOCKER_RUNNER) aws ecr get-login-password \
+	@$(DOCKER_RUNNER) aws ecr get-login-password \
 		--region ${AWS_DEFAULT_REGION} \
 		| docker login \
 		--username AWS \
@@ -32,14 +32,15 @@ push-wp:
 .PHONY:push-wp
 
 build-push-wp: ecr-login build-wp push-wp
-	echo $(COMMIT_SHA) >> deploy-sha.txt
 .PHONY:build-push-wp
 
 deploy-wp:
 	@echo "=== 🧯🧯🧯 SIMULATION ==="
-	@echo "SHOULD DEPLOY USING SHA: ${COMMIT_SHA}"
-	@pwd
-	@ls
+	@echo "SHOULD DEPLOY USING SHA:"
+	@$(DOCKER_RUNNER) aws ecr describe-images \
+		--repository-name ${DOCKER_REPOSITORY} \
+		--query 'reverse(sort_by(imageDetails,& imagePushedAt))[0].imageTags[-1]' \
+		--output text
 .PHONY:deploy
 
 test-aws:

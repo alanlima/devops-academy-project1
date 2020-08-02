@@ -1,12 +1,6 @@
 version: "3.8"
 
 services:
-  gh:
-    image: github-actions
-    build:
-      dockerfile: ./docker/Dockerfile
-      context: .
-
   aws:
     image: amazon/aws-cli:2.0.36
     volumes:
