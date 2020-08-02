@@ -1,4 +1,4 @@
-include .env
+-include .env
 
 COMMIT_SHA ?= $(shell git rev-parse --short HEAD)
 AWS_REGION ?= $(shell cat ~/.aws/config | grep -m 1 region | sed 's/region = //')
