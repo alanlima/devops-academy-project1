@@ -32,11 +32,14 @@ push-wp:
 .PHONY:push-wp
 
 build-push-wp: ecr-login build-wp push-wp
+	echo $(COMMIT_SHA) >> deploy-sha.txt
 .PHONY:build-push-wp
 
 deploy-wp:
 	@echo "=== 🧯🧯🧯 SIMULATION ==="
 	@echo "SHOULD DEPLOY USING SHA: ${COMMIT_SHA}"
+	@pwd
+	@ls
 .PHONY:deploy
 
 test-aws:
