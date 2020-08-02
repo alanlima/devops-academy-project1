@@ -14,16 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Debug commands
-        run: echo $GITHUB_REF && echo $GITHUB_SHA
-
-      - uses: actions/cache@v2
-        with:
-          path: ./ci
-          key: ${{ github.ref }}
-      
-      - name: Display structure of downloaed files
-        run: ls ci -R && cat ./ci/deploy-sha.txt
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: ./ci
+      #     key: ${{ github.ref }}
 
       - name: Deploy Wordpress to ECR
         run: cd ci && make deploy-wp
