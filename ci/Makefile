@@ -43,6 +43,11 @@ deploy-wp:
 		--output text
 .PHONY:deploy
 
+tf-ci-plan:
+	@$(DOCKER_RUNNER) ci-terraform init
+	@$(DOCKER_RUNNER) ci-terraform plan
+.PHONY:tf-ci-plan
+
 test-aws:
 	$(DOCKER_RUNNER) aws sts get-caller-identity --output json
 .PHONY:test-aws

@@ -1,0 +1,19 @@
+name: on-pr-ci-terraform
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - ci/tf/**/*
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Terraform Plan
+        working-directory: ci
+        run: make tf-ci-plan

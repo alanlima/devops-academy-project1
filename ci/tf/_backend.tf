@@ -1,5 +1,16 @@
+# terraform {
+#   backend "local" {
+#     path = "./terraform.tfstate"
+#   }
+# }
+
 terraform {
-  backend "local" {
-    path = "./terraform.tfstate"
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "alima-devopsacademy"
+
+    workspaces {
+      name = "gh-ci-project1"
+    }
   }
 }
