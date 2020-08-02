@@ -18,7 +18,7 @@ jobs:
         id: tf_cred
         with:
           _input-file: './.github/terraform/credentials.tfrc.json'
-          TERRAFORM_TOKEN: ${{ secrets.TF_VAR_github_token }}
+          TERRAFORM_TOKEN: ${{ secrets.TERRAFORM_TOKEN }}
 
       - name: Update Terraform Credentials
         run: echo '${{ steps.tf_cred.outputs.result }}' > ./.github/terraform/credentials.tfrc.json
@@ -26,6 +26,4 @@ jobs:
       - name: Terraform Plan
         working-directory: ci
         run: make tf-ci-plan
-        env:
-          TF_VAR_github_token: ${{ secrets.TF_VAR_github_token }}
           

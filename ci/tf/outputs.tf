@@ -2,6 +2,5 @@ output "access_key" {
   value = {
     user   = aws_iam_access_key.github.user
     id     = aws_iam_access_key.github.id
-    secret = aws_iam_access_key.github.secret
   }
 }
