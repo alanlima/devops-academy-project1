@@ -1,5 +1,7 @@
 -include .env
 
+#force change ;)
+
 COMMIT_SHA ?= $(shell git rev-parse --short HEAD)
 AWS_REGION ?= $(shell cat ~/.aws/config | grep -m 1 region | sed 's/region = //')
 AWS_ACCOUNT_ID ?= $(shell aws sts get-caller-identity --query "Account" --output text)
