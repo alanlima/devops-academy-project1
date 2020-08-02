@@ -23,7 +23,7 @@ jobs:
           path: ./ci
       
       - name: Display structure of downloaed files
-        run: ls ci -R
+        run: ls ci -R && cat ./ci/deploy-sha.txt
 
       - name: Deploy Wordpress to ECR
         run: cd ci && make deploy-wp
