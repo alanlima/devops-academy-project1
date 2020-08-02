@@ -1,0 +1,41 @@
+name: on-push-deploy-wp
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - src/docker/**/*
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Deploy Wordpress to ECR
+        working-directory: ci
+        run: make deploy-wp
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      # - name: Dump GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+      #   run: echo "$GITHUB_CONTEXT"
+
+      # - name: Dump job context
+      #   env:
+      #     JOB_CONTEXT: ${{ toJson(job) }}
+      #   run: echo "$JOB_CONTEXT"
+
+      # - name: Debug commands
+      #   run: |
+      #     echo $GITHUB_REF \
+      #     && echo $GITHUB_SHA \
+      #     && echo $HEAD_TREE_ID
+      #   env:
+      #     HEAD_TREE_ID: ${{ github.event.head_commit.tree_id }}

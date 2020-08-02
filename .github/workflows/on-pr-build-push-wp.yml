@@ -1,14 +1,15 @@
 # This is a basic workflow to help you get started with Actions
 
-name: wp-build-push
+name: on-pr-build-push-wp
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
   pull_request:
-    branches: [master]
-    # paths:
-    #   - 'src/docker/**/*'
+    branches:
+      - master
+    paths:
+      - src/docker/**/*
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,43 +23,36 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      # ti
       - name: Pulling help images
-        run: cd ci && docker-compose pull aws
-
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-        
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-
-      - name: Debug commands
-        run: |
-          echo $GITHUB_REF \
-          && echo $GITHUB_SHA \
-          && echo $HEAD_TREE_ID
-        env:
-          HEAD_TREE_ID: ${{ github.event.head_commit.tree_id }}
-
-      # - name: Debug commands
-      #   run: echo $GITHUB_REF && echo $GITHUB_SHA
-
-      # - name: Check AWS credentials
-      #   run: cd ci && make test-aws
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        working-directory: ci
+        run: docker-compose pull aws
 
       - name: Build and Push Docker Image
-        run: cd ci && make build-push-wp
+        working-directory: ci
+        run: make build-push-wp
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      # - name: Dump GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+      #   run: echo "$GITHUB_CONTEXT"
+        
+      # - name: Dump job context
+      #   env:
+      #     JOB_CONTEXT: ${{ toJson(job) }}
+      #   run: echo "$JOB_CONTEXT"
+
+      # - name: Debug commands
+      #   run: |
+      #     echo $GITHUB_REF \
+      #     && echo $GITHUB_SHA \
+      #     && echo $HEAD_TREE_ID
+      #   env:
+      #     HEAD_TREE_ID: ${{ github.event.head_commit.tree_id }}
 
       # - uses: actions/cache@v2
       #   with:
