@@ -9,6 +9,11 @@ DOCKER_REGISTRY_URL ?= ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws
 ecr-login:
 	@echo "\n === 🔐 Login to ECR docker registry: ${C_GREEN}${DOCKER_REGISTRY_URL}${C_RESET}\n"
 
+# check if the amazon aws was pulled, if not, pull it.
+	@if [ -z "$(shell docker image ls --filter=reference=amazon/aws-cli -q)" ]; then\
+		docker-compose pull aws;\
+	fi
+
 	@$(DOCKER_RUNNER) aws ecr get-login-password \
 		--region ${AWS_DEFAULT_REGION} \
 		| docker login \
