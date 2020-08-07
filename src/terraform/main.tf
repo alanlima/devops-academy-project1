@@ -14,12 +14,13 @@ module "load_balancer" {
   source        = "./modules/load_balancer"
   project       = var.project
   vpc_id        = module.vpc.vpc_id
-  lb_subnets    = module.vpc.public_subnets[*].id
+  lb_subnets    = keys(module.vpc.public_subnets)
   https_enabled = var.https_enabled
 }
 
 module "container_registry" {
-  source = "./modules/container_registry"
+  source          = "./modules/container_registry"
+  repository_name = "wordpress"
 }
 
 # module "rds" {
@@ -36,10 +37,15 @@ module "container_registry" {
 #   private_subnets = module.vpc.private_subnets[*].id
 # }
 
-
-# module "EFS_MODULE" {
-#   source = "MODULE_PATH"
-# }
+module "efs" {
+  source          = "./modules/efs"
+  project         = var.project
+  vpc_cidr        = var.vpc_cidr
+  vpc_id          = module.vpc.vpc_id
+  private_subnets = keys(module.vpc.private_subnets)
+  common_tags     = {}
+  ecs_sg_id = ""
+}
 
 # module "ECS_CLUSTER_MODULE" {
 #   source = "MODULE_PATH"

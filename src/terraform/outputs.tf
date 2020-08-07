@@ -9,3 +9,7 @@ output "vpc-module" {
 # output "ecr-module" {
 #   value = module.container_registry
 # }
+
+output "efs-module" {
+  value = module.efs
+}
