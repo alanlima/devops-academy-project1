@@ -44,12 +44,17 @@ module "efs" {
   vpc_id          = module.vpc.vpc_id
   private_subnets = keys(module.vpc.private_subnets)
   common_tags     = {}
-  ecs_sg_id = ""
+  ecs_sg_id       = ""
 }
 
-# module "ECS_CLUSTER_MODULE" {
-#   source = "MODULE_PATH"
-# }
+module "ecs_cluster" {
+  source           = "./modules/ecs-cluster"
+  project          = var.project
+  common_tags      = {}
+  vpc_id           = module.vpc.vpc_id
+  public_subnets   = keys(module.vpc.public_subnets)
+  target_group_arn = module.load_balancer.target_group_arn
+}
 
 # module "ECS_SERVICE_MODULE" {
 #   source = "MODULE_PATH"
