@@ -1,6 +1,6 @@
 resource "aws_efs_file_system" "this" {
   creation_token   = var.project
-  throughput_mode = "bursting"
+  throughput_mode  = "bursting"
   performance_mode = "generalPurpose"
   encrypted        = false
   tags = merge({
@@ -30,11 +30,11 @@ resource "aws_security_group" "this" {
   vpc_id      = var.vpc_id
   name        = "${var.project}-efs-sg"
   ingress {
-    protocol        = "tcp"
-    from_port       = 2049
-    to_port         = 2049
+    protocol    = "tcp"
+    from_port   = 2049
+    to_port     = 2049
     cidr_blocks = ["0.0.0.0/0"]
-   # security_groups = [var.ecs_sg_id]
+    # security_groups = [var.ecs_sg_id]
   }
 
   egress {

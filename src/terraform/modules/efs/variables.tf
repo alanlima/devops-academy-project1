@@ -22,5 +22,5 @@ variable "vpc_cidr" {
 }
 
 variable "ecs_sg_id" {
-    type = string
+  type = string
 }
